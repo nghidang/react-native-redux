@@ -1,20 +1,10 @@
 import React, {useEffect, useState} from 'react';
 import {View, Button} from 'react-native';
+import {connect} from 'react-redux';
 import Counter from './components/Counter';
-import store from './store';
 import * as actions from './actions';
 
-const Main = () => {
-  const [counter, setCounter] = useState(store.getState().counter);
-
-  useEffect(() => {
-    const unsubscribe = store.subscribe(() => {
-      setCounter(store.getState().counter);
-    });
-
-    return unsubscribe;
-  });
-
+const Main = (props) => {
   return (
     <View
       style={{
@@ -26,7 +16,7 @@ const Main = () => {
           justifyContent: 'center',
           alignItems: 'center',
         }}>
-        <Counter value={counter} />
+        <Counter value={props.counter} />
       </View>
 
       <View
@@ -36,13 +26,13 @@ const Main = () => {
         <Button
           title="Increase"
           onPress={() => {
-            store.dispatch(actions.counterIncrease());
+            props.counterIncrease();
           }}
         />
         <Button
           title="Decrease"
           onPress={() => {
-            store.dispatch(actions.counterDecrease());
+            props.counterDecrease();
           }}
         />
       </View>
@@ -50,4 +40,10 @@ const Main = () => {
   );
 };
 
-export default Main;
+const mapStateToProps = (state) => ({
+  counter: state.counter,
+});
+
+const mapDispatchToProps = actions;
+
+export default connect(mapStateToProps, mapDispatchToProps)(Main);
