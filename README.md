@@ -1,4 +1,4 @@
-# Run instructions
+# Redux tutorial
 
 ## Run instructions for iOS
 
